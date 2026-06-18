@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,13 +14,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.forvill.hisaabkhataa.core.i18n.AppStrings
 
 @Composable
 fun LanguageSelectionScreen(
+    strings: AppStrings,
     selectedLanguage: String,
     onSelectLanguage: (String) -> Unit,
     onContinue: () -> Unit,
@@ -35,26 +35,26 @@ fun LanguageSelectionScreen(
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Text(
-                text = "Choose your language",
+                text = strings.languageTitle,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "App startup flow will support English and Hindi from day one.",
+                text = strings.languageSubtitle,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 LanguageCard(
                     title = "English",
                     subtitle = "Fast, clean, business-first",
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.fillMaxWidth(),
                     isSelected = selectedLanguage == "English",
                     onClick = { onSelectLanguage("English") },
                 )
                 LanguageCard(
-                    title = "हिंदी",
-                    subtitle = "दुकानदारों के लिए आसान अनुभव",
-                    modifier = Modifier.weight(1f),
+                    title = "Hindi",
+                    subtitle = "Dukaandaron ke liye asaan anubhav",
+                    modifier = Modifier.fillMaxWidth(),
                     isSelected = selectedLanguage == "Hindi",
                     onClick = { onSelectLanguage("Hindi") },
                 )
@@ -64,7 +64,7 @@ fun LanguageSelectionScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = onContinue,
         ) {
-            Text("Continue")
+            Text(strings.continueLabel)
         }
     }
 }

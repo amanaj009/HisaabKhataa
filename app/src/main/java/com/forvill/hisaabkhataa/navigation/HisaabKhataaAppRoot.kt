@@ -21,7 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.forvill.hisaabkhataa.core.data.SampleData
+import com.forvill.hisaabkhataa.core.i18n.appStrings
 import com.forvill.hisaabkhataa.feature.auth.BusinessSetupScreen
 import com.forvill.hisaabkhataa.feature.auth.MobileLoginScreen
 import com.forvill.hisaabkhataa.feature.auth.OtpScreen
@@ -41,8 +41,9 @@ import com.forvill.hisaabkhataa.feature.splash.SplashScreen
 @Composable
 fun HisaabKhataaAppRoot() {
     val navController = rememberNavController()
-    // AppState keeps this prototype easy to evolve until we introduce ViewModels and backend data.
+    // AppState keeps this prototype easy to evolve until ViewModels and live APIs are introduced.
     val appState = remember { AppState() }
+    val strings = appStrings(appState.appLanguage())
     val backStackEntry = navController.currentBackStackEntryAsState().value
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in bottomNavItems.map { it.route }
@@ -57,7 +58,7 @@ fun HisaabKhataaAppRoot() {
         topBar = {
             if (showTopBar) {
                 TopAppBar(
-                    title = { Text(titleForRoute(currentRoute)) },
+                    title = { Text(titleForRoute(currentRoute, strings)) },
                     navigationIcon = {
                         IconButton(onClick = { navController.popBackStack() }) {
                             Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
@@ -99,10 +100,11 @@ fun HisaabKhataaAppRoot() {
         ) {
             // Startup flow stays separate from post-login screens so onboarding can evolve independently.
             composable(AppDestination.Splash.route) {
-                SplashScreen(onContinue = { navController.navigate(AppDestination.Language.route) })
+                SplashScreen(strings = strings, onContinue = { navController.navigate(AppDestination.Language.route) })
             }
             composable(AppDestination.Language.route) {
                 LanguageSelectionScreen(
+                    strings = strings,
                     selectedLanguage = appState.selectedLanguage,
                     onSelectLanguage = { appState.selectedLanguage = it },
                     onContinue = { navController.navigate(AppDestination.Onboarding.route) },
@@ -110,12 +112,14 @@ fun HisaabKhataaAppRoot() {
             }
             composable(AppDestination.Onboarding.route) {
                 OnboardingScreen(
-                    pages = SampleData.onboardingPages,
+                    strings = strings,
+                    pages = appState.onboardingPages,
                     onContinue = { navController.navigate(AppDestination.Auth.route) },
                 )
             }
             composable(AppDestination.Auth.route) {
                 MobileLoginScreen(
+                    strings = strings,
                     mobileNumber = appState.mobileNumber,
                     onMobileChange = { appState.mobileNumber = it },
                     onContinue = { navController.navigate(AppDestination.Otp.route) },
@@ -123,6 +127,7 @@ fun HisaabKhataaAppRoot() {
             }
             composable(AppDestination.Otp.route) {
                 OtpScreen(
+                    strings = strings,
                     otpCode = appState.otpCode,
                     onOtpChange = { appState.otpCode = it },
                     onVerify = { navController.navigate(AppDestination.Setup.route) },
@@ -130,6 +135,7 @@ fun HisaabKhataaAppRoot() {
             }
             composable(AppDestination.Setup.route) {
                 BusinessSetupScreen(
+                    strings = strings,
                     profile = appState.businessProfile,
                     onProfileChange = appState::updateProfile,
                     onContinue = {
@@ -141,9 +147,13 @@ fun HisaabKhataaAppRoot() {
             }
             composable(AppDestination.Home.route) {
                 HomeScreen(
+                    strings = strings,
                     profile = appState.businessProfile,
                     parties = appState.parties,
-                    onAddEntry = { navController.navigate(AppDestination.AddEntry.route) },
+                    onAddEntry = { type ->
+                        appState.resetEntryDraft(type)
+                        navController.navigate(AppDestination.AddEntry.route)
+                    },
                     onOpenParty = { partyId ->
                         appState.selectParty(partyId)
                         navController.navigate(AppDestination.PartyDetail.route)
@@ -153,51 +163,69 @@ fun HisaabKhataaAppRoot() {
             }
             composable(AppDestination.Parties.route) {
                 PartyListScreen(
+                    strings = strings,
                     parties = appState.parties,
                     onSelectParty = { partyId ->
                         appState.selectParty(partyId)
                         navController.navigate(AppDestination.PartyDetail.route)
                     },
-                    onAddEntry = { navController.navigate(AppDestination.AddEntry.route) },
+                    onAddEntry = { type ->
+                        appState.resetEntryDraft(type)
+                        navController.navigate(AppDestination.AddEntry.route)
+                    },
                 )
             }
             composable(AppDestination.PartyDetail.route) {
                 PartyDetailScreen(
+                    strings = strings,
                     party = appState.selectedParty(),
-                    onAddEntry = { navController.navigate(AppDestination.AddEntry.route) },
+                    onAddEntry = { type ->
+                        appState.resetEntryDraft(type)
+                        navController.navigate(AppDestination.AddEntry.route)
+                    },
                 )
             }
             composable(AppDestination.AddEntry.route) {
                 AddEntryScreen(
+                    strings = strings,
                     party = appState.selectedParty(),
-                    onDone = { navController.popBackStack() },
+                    draft = appState.addEntryDraft,
+                    onAmountChange = appState::updateEntryAmount,
+                    onNoteChange = appState::updateEntryNote,
+                    onDueDateChange = appState::updateEntryDueDateLabel,
+                    onTypeChange = appState::setEntryType,
+                    onSave = {
+                        appState.saveEntry()
+                        navController.popBackStack()
+                    },
                 )
             }
             composable(AppDestination.Reminders.route) {
-                ReminderScreen()
+                ReminderScreen(strings = strings)
             }
             composable(AppDestination.Reports.route) {
-                ReportsScreen()
+                ReportsScreen(strings = strings)
             }
             composable(AppDestination.Settings.route) {
                 SettingsScreen(
+                    strings = strings,
                     profile = appState.businessProfile,
                     onOpenPrivacyPolicy = { navController.navigate(AppDestination.PrivacyPolicy.route) },
                 )
             }
             composable(AppDestination.PrivacyPolicy.route) {
-                PrivacyPolicyScreen()
+                PrivacyPolicyScreen(strings = strings)
             }
         }
     }
 }
 
-private fun titleForRoute(route: String?): String {
+private fun titleForRoute(route: String?, strings: com.forvill.hisaabkhataa.core.i18n.AppStrings): String {
     return when (route) {
-        AppDestination.PartyDetail.route -> "Party details"
-        AppDestination.AddEntry.route -> "Add entry"
-        AppDestination.Reminders.route -> "Reminders"
-        AppDestination.PrivacyPolicy.route -> "Privacy policy"
+        AppDestination.PartyDetail.route -> strings.partyDetailTitle
+        AppDestination.AddEntry.route -> strings.addEntryTopTitle
+        AppDestination.Reminders.route -> strings.remindersTitle
+        AppDestination.PrivacyPolicy.route -> strings.privacyPolicyTitle
         else -> ""
     }
 }

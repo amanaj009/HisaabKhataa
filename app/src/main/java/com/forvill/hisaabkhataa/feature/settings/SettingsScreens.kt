@@ -23,15 +23,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.forvill.hisaabkhataa.core.i18n.AppStrings
 import com.forvill.hisaabkhataa.core.model.BusinessProfile
 
 @Composable
 fun SettingsScreen(
+    strings: AppStrings,
     profile: BusinessProfile,
     onOpenPrivacyPolicy: () -> Unit,
 ) {
     val settingsItems = listOf(
-        "Business profile" to "${profile.businessName} • ${profile.city}",
+        "Business profile" to "${profile.businessName} - ${profile.city}",
         "Language" to "English / Hindi",
         "Backup & restore" to "Manual export support can be added next",
         "Notification preferences" to "Payment reminders, collections, recovery nudges",
@@ -45,7 +47,7 @@ fun SettingsScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         item {
-            Text("Settings", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+            Text(strings.settingsTitle, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
         }
         items(settingsItems) { (title, subtitle) ->
             SettingsRow(title = title, subtitle = subtitle)
@@ -69,7 +71,7 @@ fun SettingsScreen(
         }
         item {
             SettingsRow(
-                title = "Privacy policy",
+                title = strings.privacyPolicyTitle,
                 subtitle = "How user, transaction, and reminder data is handled",
                 onClick = onOpenPrivacyPolicy,
             )
@@ -78,7 +80,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun PrivacyPolicyScreen() {
+fun PrivacyPolicyScreen(strings: AppStrings) {
     val sections = listOf(
         "Information we collect" to "Hisaab Khataa can store merchant profile details, customer names, mobile numbers, ledger balances, transaction notes, reminder preferences, and report summaries. In the current prototype, this data is shown as sample local content only.",
         "How we use information" to "This information is used to help merchants record udhaar and jama entries, display party balances, create reminders, and generate business insights such as collection totals and pending dues.",
@@ -97,8 +99,8 @@ fun PrivacyPolicyScreen() {
     ) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Privacy policy", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                Text("Draft copy for the first app version. Replace placeholders with final legal and operational details before publishing.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(strings.privacyPolicyTitle, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                Text(strings.privacyPolicySubtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
         items(sections) { (title, description) ->
@@ -127,7 +129,7 @@ private fun SettingsRow(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(modifier = Modifier.fillMaxWidth(0.82f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(title, fontWeight = FontWeight.SemiBold)
                 Text(subtitle, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }

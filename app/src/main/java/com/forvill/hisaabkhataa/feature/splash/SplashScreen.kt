@@ -16,10 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.forvill.hisaabkhataa.core.i18n.AppStrings
 import com.forvill.hisaabkhataa.core.ui.theme.Sand
 
 @Composable
-fun SplashScreen(onContinue: () -> Unit) {
+fun SplashScreen(strings: AppStrings, onContinue: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -34,17 +35,17 @@ fun SplashScreen(onContinue: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Hisaab Khataa",
+                text = strings.appName,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
-                text = "Forvill ledger app starter with Khatabook-style flow.",
+                text = strings.splashTagline,
                 color = MaterialTheme.colorScheme.onBackground,
             )
             Button(onClick = onContinue) {
-                Text("Start Preview")
+                Text(strings.continueLabel)
             }
         }
     }

@@ -18,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.forvill.hisaabkhataa.core.i18n.AppStrings
 import com.forvill.hisaabkhataa.core.model.BusinessProfile
 
 @Composable
 fun MobileLoginScreen(
+    strings: AppStrings,
     mobileNumber: String,
     onMobileChange: (String) -> Unit,
     onContinue: () -> Unit,
@@ -34,12 +36,12 @@ fun MobileLoginScreen(
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
         Text(
-            text = "Mobile login",
+            text = strings.loginTitle,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "Use your phone number to access customer ledgers, reminders, and reports.",
+            text = strings.loginSubtitle,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Card(shape = RoundedCornerShape(28.dp)) {
@@ -59,7 +61,7 @@ fun MobileLoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onContinue,
                 ) {
-                    Text("Send OTP")
+                    Text(strings.sendOtp)
                 }
             }
         }
@@ -68,6 +70,7 @@ fun MobileLoginScreen(
 
 @Composable
 fun OtpScreen(
+    strings: AppStrings,
     otpCode: String,
     onOtpChange: (String) -> Unit,
     onVerify: () -> Unit,
@@ -80,12 +83,12 @@ fun OtpScreen(
         verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         Text(
-            text = "OTP verification",
+            text = strings.otpTitle,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "Enter the 4-digit code sent to your mobile. For this prototype, any 4 digits can work.",
+            text = strings.otpSubtitle,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -105,13 +108,14 @@ fun OtpScreen(
             }
         }
         Button(onClick = onVerify, modifier = Modifier.fillMaxWidth()) {
-            Text("Verify & continue")
+            Text(strings.verifyContinue)
         }
     }
 }
 
 @Composable
 fun BusinessSetupScreen(
+    strings: AppStrings,
     profile: BusinessProfile,
     onProfileChange: (BusinessProfile) -> Unit,
     onContinue: () -> Unit,
@@ -124,12 +128,12 @@ fun BusinessSetupScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            text = "Business setup",
+            text = strings.setupTitle,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
         )
         Text(
-            text = "This step captures the basic merchant identity we will show across receipts, reminders, and reports.",
+            text = strings.setupSubtitle,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         OutlinedTextField(
@@ -163,7 +167,7 @@ fun BusinessSetupScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = onContinue,
         ) {
-            Text("Enter dashboard")
+            Text(strings.enterDashboard)
         }
     }
 }

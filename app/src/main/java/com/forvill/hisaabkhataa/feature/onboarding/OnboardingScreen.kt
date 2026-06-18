@@ -21,10 +21,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.forvill.hisaabkhataa.core.i18n.AppStrings
 import com.forvill.hisaabkhataa.core.model.OnboardingPage
 
 @Composable
 fun OnboardingScreen(
+    strings: AppStrings,
     pages: List<OnboardingPage>,
     onContinue: () -> Unit,
 ) {
@@ -39,7 +41,7 @@ fun OnboardingScreen(
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(18.dp)) {
             Text(
-                text = "Onboarding direction",
+                text = strings.onboardingTitle,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
             )
@@ -73,7 +75,7 @@ fun OnboardingScreen(
             modifier = Modifier.fillMaxWidth(),
             onClick = onContinue,
         ) {
-            Text("Continue to Sign In")
+            Text(strings.continueLabel)
         }
     }
 }

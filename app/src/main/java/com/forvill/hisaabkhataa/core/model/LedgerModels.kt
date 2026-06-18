@@ -12,6 +12,7 @@ data class LedgerEntry(
     val amount: Int,
     val type: TransactionType,
     val time: String,
+    val dueDateLabel: String? = null,
 )
 
 data class Party(
@@ -37,4 +38,11 @@ data class ReportCard(
     val title: String,
     val value: String,
     val caption: String,
+)
+
+data class AddEntryDraft(
+    val amount: String = "",
+    val note: String = "",
+    val dueDateLabel: String = "",
+    val type: TransactionType = TransactionType.Udhaar,
 )
