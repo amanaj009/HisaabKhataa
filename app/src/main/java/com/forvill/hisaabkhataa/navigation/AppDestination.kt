@@ -10,6 +10,7 @@ sealed class AppDestination(val route: String) {
     data object Home : AppDestination("home")
     data object Parties : AppDestination("parties")
     data object PartyDetail : AppDestination("party_detail")
+    data object PartyEditor : AppDestination("party_editor")
     data object AddEntry : AppDestination("add_entry")
     data object Reminders : AppDestination("reminders")
     data object Reports : AppDestination("reports")

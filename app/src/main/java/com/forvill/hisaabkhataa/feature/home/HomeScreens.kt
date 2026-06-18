@@ -31,11 +31,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.forvill.hisaabkhataa.core.data.SampleData
 import com.forvill.hisaabkhataa.core.i18n.AppStrings
 import com.forvill.hisaabkhataa.core.model.AddEntryDraft
 import com.forvill.hisaabkhataa.core.model.BusinessProfile
+import com.forvill.hisaabkhataa.core.model.LedgerApiPayload
 import com.forvill.hisaabkhataa.core.model.Party
+import com.forvill.hisaabkhataa.core.model.PartyDraft
+import com.forvill.hisaabkhataa.core.model.ReminderItem
 import com.forvill.hisaabkhataa.core.model.TransactionType
 
 @Composable
@@ -108,6 +110,7 @@ fun PartyListScreen(
     parties: List<Party>,
     onSelectParty: (String) -> Unit,
     onAddEntry: (TransactionType) -> Unit,
+    onAddParty: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -123,7 +126,10 @@ fun PartyListScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(strings.partyListTitle, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                Button(onClick = { onAddEntry(TransactionType.Udhaar) }) { Text(strings.newEntry) }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = onAddParty) { Text(strings.addParty) }
+                    Button(onClick = { onAddEntry(TransactionType.Udhaar) }) { Text(strings.newEntry) }
+                }
             }
         }
         items(parties.sortedBy { it.name }) { party ->
@@ -137,6 +143,7 @@ fun PartyDetailScreen(
     strings: AppStrings,
     party: Party,
     onAddEntry: (TransactionType) -> Unit,
+    onEditParty: () -> Unit,
 ) {
     val totalUdhaar = party.entries.filter { it.type == TransactionType.Udhaar }.sumOf { it.amount }
     val totalPayment = party.entries.filter { it.type == TransactionType.Payment }.sumOf { it.amount }
@@ -170,6 +177,7 @@ fun PartyDetailScreen(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedButton(onClick = onEditParty, modifier = Modifier.fillMaxWidth()) { Text(strings.editParty) }
                 OutlinedButton(onClick = { onAddEntry(TransactionType.Udhaar) }, modifier = Modifier.fillMaxWidth()) { Text(strings.addUdhaar) }
                 Button(onClick = { onAddEntry(TransactionType.Payment) }, modifier = Modifier.fillMaxWidth()) { Text(strings.addPayment) }
             }
@@ -209,9 +217,11 @@ fun AddEntryScreen(
     strings: AppStrings,
     party: Party,
     draft: AddEntryDraft,
+    apiPayload: LedgerApiPayload?,
     onAmountChange: (String) -> Unit,
     onNoteChange: (String) -> Unit,
     onDueDateChange: (String) -> Unit,
+    onDueDateValueChange: (String) -> Unit,
     onTypeChange: (TransactionType) -> Unit,
     onSave: () -> Unit,
 ) {
@@ -259,12 +269,32 @@ fun AddEntryScreen(
             placeholder = { Text("Example: Tomorrow evening") },
             singleLine = true,
         )
+        OutlinedTextField(
+            value = draft.dueDateValue,
+            onValueChange = onDueDateValueChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Due date (YYYY-MM-DD)") },
+            placeholder = { Text("Example: 2026-06-25") },
+            singleLine = true,
+        )
         Card(shape = RoundedCornerShape(22.dp)) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Preview", fontWeight = FontWeight.SemiBold)
                 Text("Party: ${party.name}", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text("Type: ${if (draft.type == TransactionType.Udhaar) strings.addUdhaar else strings.addPayment}", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text("Amount: Rs. ${draft.amount.ifBlank { "0" }}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        if (apiPayload != null) {
+            Card(shape = RoundedCornerShape(22.dp)) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(strings.apiPayloadTitle, fontWeight = FontWeight.SemiBold)
+                    Text("party_id: ${apiPayload.partyId}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("type: ${apiPayload.transactionType}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("amount: ${apiPayload.amount}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("language: ${apiPayload.selectedLanguage}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("due_date: ${apiPayload.dueDateValue ?: "-"}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         }
         Button(
@@ -278,7 +308,69 @@ fun AddEntryScreen(
 }
 
 @Composable
-fun ReminderScreen(strings: AppStrings) {
+fun PartyEditorScreen(
+    strings: AppStrings,
+    draft: PartyDraft,
+    isEditMode: Boolean,
+    onNameChange: (String) -> Unit,
+    onPhoneChange: (String) -> Unit,
+    onCreditLimitChange: (String) -> Unit,
+    onTagsChange: (String) -> Unit,
+    onSave: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        Text(
+            text = if (isEditMode) strings.editParty else strings.addParty,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+        )
+        OutlinedTextField(
+            value = draft.name,
+            onValueChange = onNameChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Party name") },
+            singleLine = true,
+        )
+        OutlinedTextField(
+            value = draft.phone,
+            onValueChange = onPhoneChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Mobile number") },
+            singleLine = true,
+        )
+        OutlinedTextField(
+            value = draft.creditLimit,
+            onValueChange = onCreditLimitChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Credit limit") },
+            prefix = { Text("Rs. ") },
+            singleLine = true,
+        )
+        OutlinedTextField(
+            value = draft.tags,
+            onValueChange = onTagsChange,
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text("Tags") },
+            placeholder = { Text("Wholesale, Regular") },
+        )
+        Button(
+            onClick = onSave,
+            modifier = Modifier.fillMaxWidth(),
+            enabled = draft.name.isNotBlank(),
+        ) {
+            Text(strings.saveParty)
+        }
+    }
+}
+
+@Composable
+fun ReminderScreen(strings: AppStrings, reminders: List<ReminderItem>) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -289,7 +381,7 @@ fun ReminderScreen(strings: AppStrings) {
         item {
             Text(strings.remindersTitle, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
         }
-        items(SampleData.reminders) { reminder ->
+        items(reminders) { reminder ->
             Card(shape = RoundedCornerShape(22.dp)) {
                 Row(
                     modifier = Modifier

@@ -1,6 +1,8 @@
 package com.forvill.hisaabkhataa.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -22,12 +23,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.forvill.hisaabkhataa.core.i18n.appStrings
+import com.forvill.hisaabkhataa.data.repository.ProductionLedgerRepository
 import com.forvill.hisaabkhataa.feature.auth.BusinessSetupScreen
 import com.forvill.hisaabkhataa.feature.auth.MobileLoginScreen
 import com.forvill.hisaabkhataa.feature.auth.OtpScreen
 import com.forvill.hisaabkhataa.feature.home.AddEntryScreen
 import com.forvill.hisaabkhataa.feature.home.HomeScreen
 import com.forvill.hisaabkhataa.feature.home.PartyDetailScreen
+import com.forvill.hisaabkhataa.feature.home.PartyEditorScreen
 import com.forvill.hisaabkhataa.feature.home.PartyListScreen
 import com.forvill.hisaabkhataa.feature.home.ReminderScreen
 import com.forvill.hisaabkhataa.feature.language.LanguageSelectionScreen
@@ -41,14 +44,16 @@ import com.forvill.hisaabkhataa.feature.splash.SplashScreen
 @Composable
 fun HisaabKhataaAppRoot() {
     val navController = rememberNavController()
+    val context = LocalContext.current
     // AppState keeps this prototype easy to evolve until ViewModels and live APIs are introduced.
-    val appState = remember { AppState() }
+    val appState = remember { AppState(repository = ProductionLedgerRepository(context)) }
     val strings = appStrings(appState.appLanguage())
     val backStackEntry = navController.currentBackStackEntryAsState().value
     val currentRoute = backStackEntry?.destination?.route
     val showBottomBar = currentRoute in bottomNavItems.map { it.route }
     val showTopBar = currentRoute in setOf(
         AppDestination.PartyDetail.route,
+        AppDestination.PartyEditor.route,
         AppDestination.AddEntry.route,
         AppDestination.Reminders.route,
         AppDestination.PrivacyPolicy.route,
@@ -106,7 +111,7 @@ fun HisaabKhataaAppRoot() {
                 LanguageSelectionScreen(
                     strings = strings,
                     selectedLanguage = appState.selectedLanguage,
-                    onSelectLanguage = { appState.selectedLanguage = it },
+                    onSelectLanguage = appState::updateSelectedLanguage,
                     onContinue = { navController.navigate(AppDestination.Onboarding.route) },
                 )
             }
@@ -173,6 +178,10 @@ fun HisaabKhataaAppRoot() {
                         appState.resetEntryDraft(type)
                         navController.navigate(AppDestination.AddEntry.route)
                     },
+                    onAddParty = {
+                        appState.startCreateParty()
+                        navController.navigate(AppDestination.PartyEditor.route)
+                    },
                 )
             }
             composable(AppDestination.PartyDetail.route) {
@@ -183,6 +192,25 @@ fun HisaabKhataaAppRoot() {
                         appState.resetEntryDraft(type)
                         navController.navigate(AppDestination.AddEntry.route)
                     },
+                    onEditParty = {
+                        appState.startEditSelectedParty()
+                        navController.navigate(AppDestination.PartyEditor.route)
+                    },
+                )
+            }
+            composable(AppDestination.PartyEditor.route) {
+                PartyEditorScreen(
+                    strings = strings,
+                    draft = appState.partyDraft,
+                    isEditMode = appState.editingPartyId != null,
+                    onNameChange = appState::updatePartyName,
+                    onPhoneChange = appState::updatePartyPhone,
+                    onCreditLimitChange = appState::updatePartyCreditLimit,
+                    onTagsChange = appState::updatePartyTags,
+                    onSave = {
+                        appState.savePartyDraft()
+                        navController.popBackStack()
+                    },
                 )
             }
             composable(AppDestination.AddEntry.route) {
@@ -190,9 +218,11 @@ fun HisaabKhataaAppRoot() {
                     strings = strings,
                     party = appState.selectedParty(),
                     draft = appState.addEntryDraft,
+                    apiPayload = appState.latestLedgerPayload,
                     onAmountChange = appState::updateEntryAmount,
                     onNoteChange = appState::updateEntryNote,
                     onDueDateChange = appState::updateEntryDueDateLabel,
+                    onDueDateValueChange = appState::updateEntryDueDateValue,
                     onTypeChange = appState::setEntryType,
                     onSave = {
                         appState.saveEntry()
@@ -201,15 +231,30 @@ fun HisaabKhataaAppRoot() {
                 )
             }
             composable(AppDestination.Reminders.route) {
-                ReminderScreen(strings = strings)
+                ReminderScreen(strings = strings, reminders = appState.reminders)
             }
             composable(AppDestination.Reports.route) {
-                ReportsScreen(strings = strings)
+                ReportsScreen(
+                    strings = strings,
+                    reports = appState.reports,
+                    filter = appState.reportFilter,
+                    lastExport = appState.lastReportExport,
+                    onRangeKeyChange = appState::updateReportRange,
+                    onStartDateChange = appState::updateReportStartDate,
+                    onEndDateChange = appState::updateReportEndDate,
+                    onExport = appState::exportReports,
+                )
             }
             composable(AppDestination.Settings.route) {
                 SettingsScreen(
                     strings = strings,
                     profile = appState.businessProfile,
+                    settings = appState.settings,
+                    syncQueue = appState.syncQueue,
+                    onProfileChange = appState::updateProfile,
+                    onLanguageChange = appState::updateSelectedLanguage,
+                    onReminderToggle = appState::updateReminderPreference,
+                    onRetrySync = appState::retrySyncQueue,
                     onOpenPrivacyPolicy = { navController.navigate(AppDestination.PrivacyPolicy.route) },
                 )
             }
@@ -223,6 +268,7 @@ fun HisaabKhataaAppRoot() {
 private fun titleForRoute(route: String?, strings: com.forvill.hisaabkhataa.core.i18n.AppStrings): String {
     return when (route) {
         AppDestination.PartyDetail.route -> strings.partyDetailTitle
+        AppDestination.PartyEditor.route -> strings.addParty
         AppDestination.AddEntry.route -> strings.addEntryTopTitle
         AppDestination.Reminders.route -> strings.remindersTitle
         AppDestination.PrivacyPolicy.route -> strings.privacyPolicyTitle

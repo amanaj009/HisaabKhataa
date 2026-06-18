@@ -10,6 +10,7 @@ import com.forvill.hisaabkhataa.core.model.TransactionType
 import com.forvill.hisaabkhataa.core.ui.theme.Clay
 import com.forvill.hisaabkhataa.core.ui.theme.Gold
 import com.forvill.hisaabkhataa.core.ui.theme.Moss
+import java.util.Calendar
 
 object SampleData {
     // Central sample dataset keeps UI work moving before API and persistence layers are added.
@@ -48,9 +49,9 @@ object SampleData {
             creditLimit = 12000,
             tags = listOf("Wholesale", "Regular"),
             entries = listOf(
-                LedgerEntry("st-1", "Atta bags", "10 x 5kg", 3200, TransactionType.Udhaar, "Today, 10:15 AM"),
-                LedgerEntry("st-2", "UPI collection", "Partial payment", 1500, TransactionType.Payment, "Yesterday, 7:42 PM"),
-                LedgerEntry("st-3", "Oil cartons", "3 x 15L", 2800, TransactionType.Udhaar, "Yesterday, 11:20 AM"),
+                LedgerEntry("st-1", "Atta bags", "10 x 5kg", 3200, TransactionType.Udhaar, "Today, 10:15 AM", createdAtMillis = sampleTimestamp(0, 10, 15)),
+                LedgerEntry("st-2", "UPI collection", "Partial payment", 1500, TransactionType.Payment, "Yesterday, 7:42 PM", createdAtMillis = sampleTimestamp(-1, 19, 42)),
+                LedgerEntry("st-3", "Oil cartons", "3 x 15L", 2800, TransactionType.Udhaar, "Yesterday, 11:20 AM", createdAtMillis = sampleTimestamp(-1, 11, 20)),
             ),
         ),
         Party(
@@ -62,8 +63,8 @@ object SampleData {
             creditLimit = 5000,
             tags = listOf("Milk supplier"),
             entries = listOf(
-                LedgerEntry("ad-1", "Morning milk bill", "14 packets", 2000, TransactionType.Payment, "Today, 6:20 AM"),
-                LedgerEntry("ad-2", "Previous due", "Cleared balance", 1800, TransactionType.Payment, "Yesterday, 8:00 PM"),
+                LedgerEntry("ad-1", "Morning milk bill", "14 packets", 2000, TransactionType.Payment, "Today, 6:20 AM", createdAtMillis = sampleTimestamp(0, 6, 20)),
+                LedgerEntry("ad-2", "Previous due", "Cleared balance", 1800, TransactionType.Payment, "Yesterday, 8:00 PM", createdAtMillis = sampleTimestamp(-1, 20, 0)),
             ),
         ),
         Party(
@@ -75,7 +76,7 @@ object SampleData {
             creditLimit = 7000,
             tags = listOf("Occasional"),
             entries = listOf(
-                LedgerEntry("rh-1", "Repair material", "Hooks and tape", 980, TransactionType.Udhaar, "Yesterday, 1:05 PM"),
+                LedgerEntry("rh-1", "Repair material", "Hooks and tape", 980, TransactionType.Udhaar, "Yesterday, 1:05 PM", createdAtMillis = sampleTimestamp(-1, 13, 5)),
             ),
         ),
     )
@@ -92,4 +93,13 @@ object SampleData {
         ReportCard("This week sales", "₹1.82L", "11% better than last week"),
         ReportCard("Recovery rate", "74%", "Reminder flow is working well"),
     )
+    private fun sampleTimestamp(dayOffset: Int, hour: Int, minute: Int): Long {
+        return Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, dayOffset)
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.timeInMillis
+    }
 }
