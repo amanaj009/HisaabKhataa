@@ -1,5 +1,6 @@
 package com.forvill.hisaabkhataa.core.data
 
+import android.graphics.Color
 import com.forvill.hisaabkhataa.core.model.BusinessProfile
 import com.forvill.hisaabkhataa.core.model.LedgerEntry
 import com.forvill.hisaabkhataa.core.model.OnboardingPage
@@ -7,12 +8,14 @@ import com.forvill.hisaabkhataa.core.model.Party
 import com.forvill.hisaabkhataa.core.model.ReminderItem
 import com.forvill.hisaabkhataa.core.model.ReportCard
 import com.forvill.hisaabkhataa.core.model.TransactionType
-import com.forvill.hisaabkhataa.core.ui.theme.Clay
-import com.forvill.hisaabkhataa.core.ui.theme.Gold
-import com.forvill.hisaabkhataa.core.ui.theme.Moss
 import java.util.Calendar
 
 object SampleData {
+    // Standard colors for the app
+    val Clay = Color.parseColor("#B14944")
+    val Moss = Color.parseColor("#4A6D5D")
+    val Gold = Color.parseColor("#A68044")
+
     // Central sample dataset keeps UI work moving before API and persistence layers are added.
     val onboardingPages = listOf(
         OnboardingPage(

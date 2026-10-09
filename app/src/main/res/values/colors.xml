@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clay">#D96C3E</color>
+    <color name="moss">#5D7754</color>
+    <color name="gold">#E9B949</color>
+    <color name="paper">#FFFFFCF7</color>
+    <color name="ink">#101820</color>
+    <color name="muted">#786E61</color>
+    <color name="finance_blue">#1A73E8</color>
+    <color name="finance_blue_light">#E8F0FE</color>
+    <color name="income_green">#0F9D58</color>
+    <color name="expense_red">#D93025</color>
+
+    <color name="white_alpha_20">#33FFFFFF</color>
+</resources>

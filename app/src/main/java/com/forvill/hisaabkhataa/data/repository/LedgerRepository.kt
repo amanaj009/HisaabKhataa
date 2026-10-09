@@ -11,7 +11,9 @@ import com.forvill.hisaabkhataa.core.model.ReminderItem
 import com.forvill.hisaabkhataa.core.model.ReportCard
 import com.forvill.hisaabkhataa.core.model.ReportExport
 import com.forvill.hisaabkhataa.core.model.ReportFilter
+import com.forvill.hisaabkhataa.core.model.ExpenseSummary
 import com.forvill.hisaabkhataa.core.model.SyncQueueItem
+import com.forvill.hisaabkhataa.core.model.TransactionExpense
 
 interface LedgerRepository {
     fun getOnboardingPages(): List<OnboardingPage>
@@ -34,4 +36,9 @@ interface LedgerRepository {
         partyId: String,
         draft: AddEntryDraft,
     ): LedgerApiPayload?
+
+    // Expense Manager
+    fun getExpenses(): List<TransactionExpense>
+    fun saveExpenses(expenses: List<TransactionExpense>): List<TransactionExpense>
+    fun buildExpenseSummary(expenses: List<TransactionExpense>): ExpenseSummary
 }

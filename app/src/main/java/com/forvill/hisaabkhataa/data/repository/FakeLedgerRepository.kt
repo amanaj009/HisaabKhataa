@@ -4,6 +4,8 @@ import com.forvill.hisaabkhataa.core.data.SampleData
 import com.forvill.hisaabkhataa.core.model.AddEntryDraft
 import com.forvill.hisaabkhataa.core.model.AppSettings
 import com.forvill.hisaabkhataa.core.model.BusinessProfile
+import com.forvill.hisaabkhataa.core.model.ExpenseSummary
+import com.forvill.hisaabkhataa.core.model.ExpenseType
 import com.forvill.hisaabkhataa.core.model.LedgerApiPayload
 import com.forvill.hisaabkhataa.core.model.LedgerEntry
 import com.forvill.hisaabkhataa.core.model.OnboardingPage
@@ -14,6 +16,7 @@ import com.forvill.hisaabkhataa.core.model.ReportCard
 import com.forvill.hisaabkhataa.core.model.ReportExport
 import com.forvill.hisaabkhataa.core.model.ReportFilter
 import com.forvill.hisaabkhataa.core.model.SyncQueueItem
+import com.forvill.hisaabkhataa.core.model.TransactionExpense
 import com.forvill.hisaabkhataa.core.model.TransactionType
 import java.io.File
 
@@ -175,6 +178,30 @@ class FakeLedgerRepository : LedgerRepository {
             note = draft.note.trim(),
             dueDateLabel = draft.dueDateLabel.ifBlank { null },
             dueDateValue = draft.dueDateValue.ifBlank { null },
+        )
+    }
+
+    private var expenses = mutableListOf<TransactionExpense>()
+
+    override fun getExpenses(): List<TransactionExpense> = expenses
+
+    override fun saveExpenses(expenses: List<TransactionExpense>): List<TransactionExpense> {
+        this.expenses = expenses.toMutableList()
+        return this.expenses
+    }
+
+    override fun buildExpenseSummary(expenses: List<TransactionExpense>): ExpenseSummary {
+        val totalIncome = expenses.filter { it.type == ExpenseType.Income }.sumOf { it.amount }
+        val totalExpense = expenses.filter { it.type == ExpenseType.Expense }.sumOf { it.amount }
+        val categorySpending = expenses.filter { it.type == ExpenseType.Expense }
+            .groupBy { it.categoryId }
+            .mapValues { entry -> entry.value.sumOf { it.amount } }
+        
+        return ExpenseSummary(
+            totalIncome = totalIncome,
+            totalExpense = totalExpense,
+            netSavings = totalIncome - totalExpense,
+            categoryWiseSpending = categorySpending
         )
     }
 }

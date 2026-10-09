@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.forvill.hisaabkhataa.feature.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_to_language"
+            app:destination="@id/languageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/languageFragment"
+        android:name="com.forvill.hisaabkhataa.feature.language.LanguageFragment"
+        tools:layout="@layout/fragment_language">
+        <action
+            android:id="@+id/action_language_to_onboarding"
+            app:destination="@id/onboardingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.forvill.hisaabkhataa.feature.onboarding.OnboardingFragment"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/action_onboarding_to_login"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.forvill.hisaabkhataa.feature.auth.LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_otp"
+            app:destination="@id/otpFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpFragment"
+        android:name="com.forvill.hisaabkhataa.feature.auth.OtpFragment"
+        tools:layout="@layout/fragment_otp">
+        <action
+            android:id="@+id/action_otp_to_setup"
+            app:destination="@id/setupFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/setupFragment"
+        android:name="com.forvill.hisaabkhataa.feature.auth.SetupFragment"
+        tools:layout="@layout/fragment_setup">
+        <action
+            android:id="@+id/action_setup_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_partyDetail"
+            app:destination="@id/partyDetailFragment" />
+        <action
+            android:id="@+id/action_home_to_reminders"
+            app:destination="@id/remindersFragment" />
+        <action
+            android:id="@+id/action_home_to_partyEditor"
+            app:destination="@id/partyEditorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/partiesFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.PartiesFragment"
+        tools:layout="@layout/fragment_parties">
+        <action
+            android:id="@+id/action_parties_to_partyDetail"
+            app:destination="@id/partyDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.forvill.hisaabkhataa.feature.reports.ReportsFragment"
+        tools:layout="@layout/fragment_reports" />
+
+    <fragment
+        android:id="@+id/expenseManagerFragment"
+        android:name="com.forvill.hisaabkhataa.feature.expense.ExpenseManagerFragment"
+        tools:layout="@layout/fragment_expense_manager" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.forvill.hisaabkhataa.feature.settings.SettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settings_to_privacyPolicy"
+            app:destination="@id/privacyPolicyFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/partyDetailFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.PartyDetailFragment"
+        tools:layout="@layout/fragment_party_detail">
+        <action
+            android:id="@+id/action_partyDetail_to_addEntry"
+            app:destination="@id/addEntryFragment" />
+        <action
+            android:id="@+id/action_partyDetail_to_partyEditor"
+            app:destination="@id/partyEditorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/partyEditorFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.PartyEditorFragment"
+        tools:layout="@layout/fragment_party_editor" />
+
+    <fragment
+        android:id="@+id/addEntryFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.AddEntryFragment"
+        tools:layout="@layout/fragment_add_entry" />
+
+    <fragment
+        android:id="@+id/remindersFragment"
+        android:name="com.forvill.hisaabkhataa.feature.home.RemindersFragment"
+        tools:layout="@layout/fragment_reminders" />
+
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.forvill.hisaabkhataa.feature.settings.PrivacyPolicyFragment"
+        tools:layout="@layout/fragment_privacy_policy" />
+
+</navigation>
