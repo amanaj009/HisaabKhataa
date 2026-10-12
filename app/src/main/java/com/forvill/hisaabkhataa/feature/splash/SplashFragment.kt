@@ -26,7 +26,7 @@ class SplashFragment : Fragment() {
         val strings = viewModel.getStrings()
 
         binding.appName.text = strings.appName
-        binding.tagline.text = strings.splashTagline
+        binding.taglinej.text = strings.splashTagline
         binding.btnContinue.text = strings.continueLabel
 
         binding.btnContinue.setOnClickListener {

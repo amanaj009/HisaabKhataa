@@ -1,104 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/clay">
+    android:orientation="vertical"
+    android:background="@drawable/bg_splash_light"
+    android:fitsSystemWindows="true">
 
+    <!-- App Branding -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:background="@drawable/bg_circle_white_alpha">
-
-            <ImageView
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_menu_book"
-                app:tint="@android:color/white" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Hisaab Khataa"
-            android:textColor="@android:color/white"
-            android:textSize="42sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tagline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:paddingHorizontal="20dp"
-            android:text="Simple ledger, smarter collection, stronger business rhythm."
-            android:textColor="#E6FFFFFF"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:paddingTop="28dp"
         android:paddingHorizontal="24dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_continue"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:backgroundTint="@android:color/white"
-            android:text="CONTINUE"
-            android:textColor="@color/clay"
-            android:textStyle="bold"
-            app:cornerRadius="12dp" />
+        <TextView
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:background="@drawable/bg_logo_orange"
+            android:gravity="center"
+            android:text="▤"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:contentDescription="Hisaab Khataa Logo" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_security"
-                app:tint="#B3FFFFFF" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hisaab "
+                    android:textStyle="bold"
+                    android:textSize="27sp"
+                    android:textColor="#10254C" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Khataa"
+                    android:textStyle="bold"
+                    android:textSize="27sp"
+                    android:textColor="#FF791B" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="100% Safe &amp; Secure"
-                android:textColor="#B3FFFFFF"
-                android:textSize="14sp" />
+                android:text="Simple Ledger • Smart Collection"
+                android:textSize="11sp"
+                android:textColor="#657B99" />
+
         </LinearLayout>
+    </LinearLayout>
+
+    <!-- Scrollable Center -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="26dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- Illustration Area -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="310dp">
+
+                <!-- Decorative Mint Circle -->
+                <View
+                    android:layout_width="245dp"
+                    android:layout_height="245dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_mint_circle" />
+
+                <!-- Transaction Ledger -->
+                <LinearLayout
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_ledger_card"
+                    android:elevation="12dp"
+                    android:padding="18dp"
+                    android:orientation="vertical">
+
+                    <!-- Green Card Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="74dp"
+                        android:background="@drawable/bg_green_header"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="18dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₹"
+                            android:textColor="#FFFFFF"
+                            android:textSize="40sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
+
+                            <View
+                                android:layout_width="105dp"
+                                android:layout_height="8dp"
+                                android:background="#A9E8CE" />
+
+                            <View
+                                android:layout_width="70dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="9dp"
+                                android:background="#A9E8CE" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Transaction 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_mint_circle"
+                            android:text="✓"
+                            android:textSize="21sp"
+                            android:textColor="#139A68" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Payment Received"
+                                android:textSize="12sp"
+                                android:textColor="#243B55"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Today"
+                                android:textSize="10sp"
+                                android:textColor="#8D9AAD" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ ₹2,500"
+                            android:textColor="#119E68"
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EFF2F6" />
+
+                    <!-- Transaction 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_red_circle"
+                            android:text="↗"
+                            android:textSize="22sp"
+                            android:textColor="#EE584B" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Payment Given"
+                                android:textColor="#243B55"
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Yesterday"
+                                android:textColor="#8D9AAD"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="- ₹1,200"
+                            android:textColor="#F04F43"
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EFF2F6" />
+
+                    <!-- Transaction 3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="66dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:gravity="center"
+                            android:background="@drawable/bg_mint_circle"
+                            android:text="✓"
+                            android:textSize="21sp"
+                            android:textColor="#139A68" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Payment Received"
+                                android:textColor="#243B55"
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:text="Yesterday"
+                                android:textColor="#8D9AAD"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+ ₹3,800"
+                            android:textColor="#119E68"
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Decorative Coins -->
+                <TextView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginBottom="18dp"
+                    android:background="@drawable/bg_coin"
+                    android:gravity="center"
+                    android:elevation="15dp"
+                    android:text="₹"
+                    android:textSize="38sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+            </FrameLayout>
+
+            <!-- Heading -->
+            <TextView
+                android:id="@+id/app_namei"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="Manage Your Business"
+                android:textStyle="bold"
+                android:textSize="27sp"
+                android:textColor="#10254C" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:gravity="center"
+                android:text="with Confidence"
+                android:textStyle="bold"
+                android:textSize="28sp"
+                android:textColor="#058C62" />
+
+            <!-- Tagline -->
+            <TextView
+                android:id="@+id/taglinej"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:paddingHorizontal="8dp"
+                android:gravity="center"
+                android:text="Track payments, manage customers, and grow your business — all in one place."
+                android:textColor="#657B99"
+                android:textSize="15sp"
+                android:lineSpacingExtra="5dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Section -->
+    <LinearLayout
+        android:id="@+id/kz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="26dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="28dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_continue"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_button_orange"
+            android:backgroundTint="@null"
+            android:text="CONTINUE  →"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:stateListAnimator="@null" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Made with ❤️ in India"
-            android:textColor="#80FFFFFF"
+            android:layout_marginTop="20dp"
+            android:text="♢  100% Safe &amp; Secure    |    🇮🇳 Made in India"
+            android:textColor="#657B99"
             android:textSize="12sp" />
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
