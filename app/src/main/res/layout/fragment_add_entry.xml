@@ -1,165 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="@drawable/bg_splash_light"
+    android:fitsSystemWindows="true">
 
+    <!-- Scrollable Main Content -->
     <ScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/entry_scroll"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_save"
-        app:layout_constraintTop_toTopOf="parent">
+        android:fillViewport="false"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_section"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="28dp"
+            android:paddingBottom="28dp">
 
+            <!-- Header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hisaab Khataa"
+                android:textColor="#10254C"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <!-- Entry Icon -->
+            <FrameLayout
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/bg_login_icon">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="₹"
+                    android:textColor="#0B9466"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
+
+            <!-- Title -->
             <TextView
                 android:id="@+id/add_entry_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="New Entry"
-                android:textColor="@color/ink"
-                android:textSize="24sp"
+                android:layout_marginTop="22dp"
+                android:text="Add a new"
+                android:textColor="#10254C"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="entry."
+                android:textColor="#F47C18"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/add_entry_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:text="Adding entry for Party Name."
-                android:textColor="@color/muted" />
+                android:textColor="#657B99"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/toggle_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:singleSelection="true"
-                app:checkedButton="@+id/btn_udhaar">
-
-                <Button
-                    android:id="@+id/btn_udhaar"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UDHAAR" />
-
-                <Button
-                    android:id="@+id/btn_payment"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PAYMENT" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Amount"
-                app:prefixText="Rs. ">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_amount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Note or sold items">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_note"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:minLines="3" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Due date or reminder label">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_due_label"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Example: Tomorrow evening"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="Due date (YYYY-MM-DD)">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_due_value"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Example: 2026-06-25"
-                    android:inputType="date" />
-            </com.google.android.material.textfield.TextInputLayout>
-
+            <!-- Transaction Details Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="22dp">
+                android:layout_marginTop="28dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#E8EBED"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
+
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Preview"
+                        android:text="Transaction Details"
+                        android:textColor="#10254C"
+                        android:textSize="19sp"
                         android:textStyle="bold" />
+
                     <TextView
-                        android:id="@+id/tv_preview_party"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Party: Name"
-                        android:textColor="@color/muted" />
-                    <TextView
-                        android:id="@+id/tv_preview_type"
-                        android:layout_width="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:text="Transaction Type"
+                        android:textColor="#10254C"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <!-- Udhaar / Payment Toggle -->
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggle_group"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Type: Udhaar"
-                        android:textColor="@color/muted" />
-                    <TextView
-                        android:id="@+id/tv_preview_amount"
-                        android:layout_width="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:singleSelection="true"
+                        app:selectionRequired="true"
+                        app:checkedButton="@id/btn_udhaar">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_udhaar"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="54dp"
+                            android:layout_weight="1"
+                            android:text="UDHAAR"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/entry_toggle_text"
+                            app:backgroundTint="@color/entry_toggle_bg"
+                            app:strokeColor="#F47C18"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="14dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_payment"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="54dp"
+                            android:layout_weight="1"
+                            android:text="PAYMENT"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/entry_toggle_text"
+                            app:backgroundTint="@color/entry_toggle_bg"
+                            app:strokeColor="#159E72"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="14dp" />
+
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <!-- Amount -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/amount_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Amount: Rs. 0"
-                        android:textColor="@color/muted" />
+                        android:layout_marginTop="24dp"
+                        android:hint="Amount"
+                        app:prefixText="₹ "
+                        app:prefixTextColor="#0B9466"
+                        app:boxBackgroundColor="#FFFCF6"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusBottomStart="15dp"
+                        app:boxCornerRadiusBottomEnd="15dp"
+                        app:boxStrokeColor="#159E72"
+                        app:hintTextColor="#159E72">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            android:textColor="#10254C"
+                            android:textSize="20sp"
+                            android:imeOptions="actionNext" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Note -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/note_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Note or Sold Items"
+                        app:boxBackgroundColor="#FFFCF6"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusBottomStart="15dp"
+                        app:boxCornerRadiusBottomEnd="15dp"
+                        app:boxStrokeColor="#159E72"
+                        app:hintTextColor="#159E72">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_note"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:minLines="3"
+                            android:maxLines="5"
+                            android:textColor="#10254C"
+                            android:textSize="15sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Reminder Label -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/due_label_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Reminder Label"
+                        app:boxBackgroundColor="#FFFCF6"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusBottomStart="15dp"
+                        app:boxCornerRadiusBottomEnd="15dp"
+                        app:boxStrokeColor="#159E72"
+                        app:hintTextColor="#159E72">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_due_label"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Example: Tomorrow evening"
+                            android:inputType="textCapSentences"
+                            android:singleLine="true"
+                            android:textColor="#10254C" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Due Date -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/due_date_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Due Date (YYYY-MM-DD)"
+                        app:boxBackgroundColor="#FFFCF6"
+                        app:boxCornerRadiusTopStart="15dp"
+                        app:boxCornerRadiusTopEnd="15dp"
+                        app:boxCornerRadiusBottomStart="15dp"
+                        app:boxCornerRadiusBottomEnd="15dp"
+                        app:boxStrokeColor="#159E72"
+                        app:hintTextColor="#159E72">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_due_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Example: 2026-12-25"
+                            android:inputType="date"
+                            android:singleLine="true"
+                            android:textColor="#10254C" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <!-- Entry Preview -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/preview_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="#E6F7EF"
+                app:cardCornerRadius="22dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="✓  Entry Preview"
+                        android:textColor="#10254C"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_preview_party"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Party: Name"
+                        android:textColor="#496A60"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_preview_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Type: Udhaar"
+                        android:textColor="#496A60"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_preview_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Amount: ₹ 0"
+                        android:textColor="#0B9466"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Secure Text -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="✓  Your transactions are securely recorded"
+                android:textColor="#657B99"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="SAVE ENTRY"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    <!-- Fixed Bottom Save Button -->
+    <LinearLayout
+        android:id="@+id/bottom_section"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#FFFCF6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="SAVE ENTRY  →"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF841E"
+            app:cornerRadius="30dp"
+            app:elevation="0dp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

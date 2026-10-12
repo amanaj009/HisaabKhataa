@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="redh">#D5ED1D47</color>
     <color name="clay">#D96C3E</color>
     <color name="moss">#5D7754</color>
     <color name="gold">#E9B949</color>
